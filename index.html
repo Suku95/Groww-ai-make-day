@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>3D Sphere Network Visualization</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <div class="main-content">
+            <div id="three-container"></div>
+            <div id="tooltip" class="tooltip"></div>
+            <div class="controls-panel">
+                <div class="panel-header">
+                    <h3>Visualization Controls</h3>
+                    <button id="toggle-controls" class="btn btn--sm btn--secondary">Hide</button>
+                </div>
+                <div id="gui-container"></div>
+            </div>
+        </div>
+        
+        <div class="info-panel">
+            <h1>3D Sphere Network</h1>
+            <p>An interactive visualization featuring lines radiating from a central point to form a spherical structure. Hover over nodes to see details and use the controls to customize the appearance.</p>
+            
+            <div class="instructions">
+                <h4>Controls:</h4>
+                <ul>
+                    <li><strong>Mouse:</strong> Orbit around the scene</li>
+                    <li><strong>Scroll:</strong> Zoom in/out</li>
+                    <li><strong>Hover:</strong> Node tooltips</li>
+                    <li><strong>Panel:</strong> Customize settings</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="/app.js"></script>
+</body>
+</html>

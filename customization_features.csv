@@ -1,0 +1,17 @@
+Feature,Control_Type,Default_Value,Range_Min,Range_Max
+Node Count,Slider,50,10,200
+Sphere Radius,Slider,15,5,50
+Line Thickness,Slider,0.02,0.01,0.1
+Node Size,Slider,0.3,0.1,2
+Animation Speed,Slider,0.5,0,3
+Core Visibility,Checkbox,True,N/A,N/A
+Line Visibility,Checkbox,True,N/A,N/A
+Node Visibility,Checkbox,True,N/A,N/A
+Core Color,Color Picker,#ffffff,N/A,N/A
+Line Color,Color Picker,#4a9eff,N/A,N/A
+Node Color,Color Picker,#ff6b47,N/A,N/A
+Background Color,Color Picker,#0a0a0a,N/A,N/A
+Rotation Toggle,Checkbox,True,N/A,N/A
+Camera Controls,Built-in,Enabled,N/A,N/A
+Hover Tooltips,Automatic,Enabled,N/A,N/A
+Reset Defaults,Button,N/A,N/A,N/A

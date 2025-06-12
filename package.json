@@ -1,0 +1,36 @@
+{
+  "name": "3d-sphere-visualization",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "start": "node server.js"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "lil-gui": "^0.19.2",
+    "node-fetch": "^3.3.2",
+    "three": "^0.165.0",
+    "yahoo-finance2": "^2.13.3"
+  },
+  "main": "app.js",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Suku95/Groww-ai-make-day.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Suku95/Groww-ai-make-day/issues"
+  },
+  "homepage": "https://github.com/Suku95/Groww-ai-make-day#readme",
+  "description": ""
+}

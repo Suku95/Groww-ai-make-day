@@ -1,0 +1,9 @@
+Metric,Optimal_Range,Performance_Factor,Optimization_Notes
+Rendering FPS,60 FPS,High,WebGL hardware acceleration
+Node Count Impact,50-100 nodes,Medium,Instanced geometry for nodes
+Line Complexity,Low complexity,Low,Simple line materials
+Animation Overhead,Minimal,Low,Smooth interpolation
+Interaction Latency,<16ms,Medium,Raycasting optimization
+Memory Usage,Moderate,Medium,Geometry reuse
+GPU Utilization,Efficient,High,Shader efficiency
+CPU Usage,Low,Low,Event handling optimization

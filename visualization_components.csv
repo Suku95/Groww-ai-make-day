@@ -1,0 +1,13 @@
+Component,Technology,Purpose,Customizable,Performance_Impact
+Core Renderer,Three.js WebGLRenderer,Hardware-accelerated 3D rendering,Yes,High
+Scene Management,Three.js Scene,Organize 3D objects hierarchy,No,Low
+Camera System,PerspectiveCamera + OrbitControls,Navigate and view the visualization,Yes,Low
+Interaction System,Raycaster + Mouse Events,Detect mouse hover on 3D objects,Yes,Medium
+Animation Engine,RequestAnimationFrame,Smooth 60fps animation loop,Yes,Medium
+GUI Controls,lil-gui,Real-time parameter adjustment,Yes,Low
+Node System,Sphere Geometry Nodes,Interactive endpoint markers,Yes,High
+Line Rendering,Line Geometry,Connect center to nodes,Yes,Medium
+Tooltip System,CSS2DRenderer,Display hover information,Yes,Low
+Event Handlers,addEventListener,Handle user interactions,No,Low
+Material System,MeshBasicMaterial,Define visual appearance,Yes,Medium
+Lighting Setup,AmbientLight + DirectionalLight,Illuminate the 3D scene,Yes,Low
