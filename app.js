@@ -104,7 +104,9 @@ class SphereVisualization {
         try {
             console.log("🔄 Attempting to fetch stock data from server...");
             
-            const response = await fetch("http://localhost:4000/stocks");
+            // const response = await fetch("http://localhost:4000/stocks");
+            const data = await fetch('/stocks.json'); // bundled static file
+
             
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
