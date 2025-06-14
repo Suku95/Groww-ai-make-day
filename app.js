@@ -103,43 +103,43 @@ class SphereVisualization {
     async fetchStockData() {
         try {
             console.log("🔄 Attempting to fetch stock data from server...");
-            
+    
+            // For local JSON file or server endpoint
             // const response = await fetch("http://localhost:4000/stocks");
-            const data = await fetch('/stocks.json'); // bundled static file
-
-            
+            const response = await fetch('/stockData.json');
+    
             if (!response.ok) {
                 throw new Error(`HTTP error! status: ${response.status} - ${response.statusText}`);
             }
-            
-            const rawStocks = await response.json();
+    
+            const rawStocks = await response.json(); // ✅ Only once
             console.log(`📦 Received ${rawStocks.length} raw stocks from server`);
-            
+    
             // Transform server data to match client expectations
             this.stocks = this.transformStockData(rawStocks);
             this.filteredStocks = this.stocks;
-            
+    
             console.log(`✅ Successfully transformed ${this.stocks.length} stocks`);
             console.log("📊 Sample transformed stock:", this.stocks[0]);
-            
+    
         } catch (error) {
             console.error("❌ Error fetching stock data:", error);
-            
-            // Check if it's a CORS error
+    
             if (error.message.includes('CORS') || error.message.includes('Failed to fetch')) {
                 console.warn("🚨 CORS or network error detected. Make sure:");
                 console.warn("   1. Server is running: node server.cjs");
                 console.warn("   2. Server is accessible at http://localhost:4000/stocks");
                 console.warn("   3. CORS is properly configured");
             }
-            
+    
             console.warn("🔄 Falling back to dummy data...");
             this.stocks = this.generateDummyStockData();
             this.filteredStocks = this.stocks;
-            
+    
             console.log(`📝 Using ${this.stocks.length} dummy stocks instead`);
         }
     }
+    
 
     generateDummyStockData() {
         const stockData = [
