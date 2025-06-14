@@ -1,92 +1,61 @@
-const https = require("https");
-const express = require("express");
-const cors = require("cors");
-
+const express = require('express');
+const cors = require('cors');
 const app = express();
 const PORT = 4000;
 
-app.use(cors());
+// Enable CORS with specific options
+app.use(cors({
+    origin: ['http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:3000'],
+    methods: ['GET', 'POST'],
+    allowedHeaders: ['Content-Type']
+}));
 
-const ALPHA_KEY = "YOUR_ALPHA_VANTAGE_KEY";
-const symbols = ["AAPL", "MSFT"];
+// Add JSON parsing middleware
+app.use(express.json());
 
-// fetch fundamentals
-function fetchOverview(symbol) {
-  return new Promise((res) => {
-    https
-      .get(
-        `https://www.alphavantage.co/query?function=OVERVIEW&symbol=${symbol}&apikey=${ALPHA_KEY}`,
-        (r) => {
-          let d = "";
-          r.on("data", (c) => (d += c));
-          r.on("end", () => res(JSON.parse(d)));
-        }
-      )
-      .on("error", () => res(null));
-  });
-}
-
-// fetch time series for returns
-function fetchDaily(symbol) {
-  return new Promise((res) => {
-    https
-      .get(
-        `https://www.alphavantage.co/query?function=TIME_SERIES_DAILY_ADJUSTED&symbol=${symbol}&apikey=${ALPHA_KEY}`,
-        (r) => {
-          let d = "";
-          r.on("data", (c) => (d += c));
-          r.on("end", () => res(JSON.parse(d)));
-        }
-      )
-      .on("error", () => res(null));
-  });
-}
-
-// calculate 1-year return
-function calcReturn(timeSeries) {
-  const data = timeSeries["Time Series (Daily)"];
-  if (!data) return null;
-
-  const dates = Object.keys(data).sort((a, b) => new Date(b) - new Date(a));
-  const latest = parseFloat(data[dates[0]]["5. adjusted close"]);
-  const yearAgoDate = dates.find((d) => new Date(d) <= new Date(Date.now() - 365 * 24 * 60 * 60 * 1000));
-  const yearAgo = parseFloat(data[yearAgoDate]["5. adjusted close"]);
-  return ((latest - yearAgo) / yearAgo) * 100;
-}
-
-app.get("/stocks", async (req, res) => {
-  const results = [];
-
-  for (let symbol of symbols) {
-    console.log(`🔄 Fetching ${symbol}...`);
-
-    const [info, daily] = await Promise.all([
-      fetchOverview(symbol),
-      fetchDaily(symbol),
-    ]);
-
-    console.log(`📄 Overview: ${JSON.stringify(info).slice(0, 100)}...`);
-    console.log(`📈 Daily Keys: ${daily ? Object.keys(daily).slice(0, 2).join(", ") : "No data"}`);
-
-    if (!info || !daily || !daily["Time Series (Daily)"]) {
-      console.log(`⚠️ Skipping ${symbol} — missing data`);
-      continue;
-    }
-
-    results.push({
-      symbol,
-      name: info.Name || symbol,
-      sector: info.Sector || "Unknown",
-      marketCap: parseFloat(info.MarketCapitalization) || null,
-      peRatio: parseFloat(info.PERatio) || null,
-      price: parseFloat(daily["Time Series (Daily)"][Object.keys(daily["Time Series (Daily)"])[0]]["4. close"]) || null,
-      oneYearReturn: calcReturn(daily) || null,
-    });
-  }
-
-  console.log(`✅ Final results: ${results.length} stocks`);
-  res.json(results);
+// Add request logging
+app.use((req, res, next) => {
+    console.log(`${new Date().toISOString()} - ${req.method} ${req.path}`);
+    next();
 });
 
+try {
+    const stockData = require('./stockData.cjs');
+    console.log(`✅ Loaded ${stockData.length} stocks from stockData.cjs`);
+    
+    // Test endpoint
+    app.get('/', (req, res) => {
+        res.json({ 
+            message: 'Stock API Server is running!', 
+            endpoints: ['/stocks'],
+            stockCount: stockData.length 
+        });
+    });
+    
+    app.get('/stocks', (req, res) => {
+        console.log(`📊 Serving ${stockData.length} stocks to client`);
+        res.json(stockData);
+    });
+    
+} catch (error) {
+    console.error('❌ Error loading stock data:', error);
+    
+    app.get('/stocks', (req, res) => {
+        res.status(500).json({ 
+            error: 'Stock data not available',
+            details: error.message 
+        });
+    });
+}
 
-app.listen(PORT, () => console.log(`fireeee AlphaV Stock API @ http://localhost:${PORT}/stocks`));
+// Error handling middleware
+app.use((err, req, res, next) => {
+    console.error('Server error:', err);
+    res.status(500).json({ error: 'Internal server error' });
+});
+
+app.listen(PORT, () => {
+    console.log(`🚀 Stock API server running on http://localhost:${PORT}`);
+    console.log(`📈 Stocks endpoint: http://localhost:${PORT}/stocks`);
+    console.log(`🔍 Test endpoint: http://localhost:${PORT}/`);
+});
